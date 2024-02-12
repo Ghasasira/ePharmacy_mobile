@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy_skeleton/pharmacy_components/cart_button.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/pharmacy_filter_tab.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/productTile.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/search_bar.dart';
@@ -22,12 +23,21 @@ class AllPharmarcyProducts extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Hello!",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(255, 46, 45, 45)),
+                        SizedBox(
+                          height: 40.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Hello!",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromARGB(255, 46, 45, 45)),
+                              ),
+                              CartButton(),
+                            ],
+                          ),
                         ),
                         Text(
                           "Let's get you your Meds",
@@ -62,17 +72,18 @@ class AllPharmarcyProducts extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Order Medicine",
+                                  "Have a Prescription?",
                                   style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
+                                    //color: Colors.white,
                                   ),
                                 ),
                                 Text(
                                   "Upload Prescription and tell us what you need. We'll do the rest",
                                   style: TextStyle(
                                     fontSize: 14.0,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                   //textAlign: TextAlign.center,
                                 ),

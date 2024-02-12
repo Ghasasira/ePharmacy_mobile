@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pharmacy_skeleton/pharmacy_components/cart_button.dart';
 
 class UploadPrescriptionScreen extends StatelessWidget {
   const UploadPrescriptionScreen({super.key});
@@ -9,7 +10,13 @@ class UploadPrescriptionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Center(child: Text('Upload Prescriptions'))),
+        appBar: AppBar(
+            actions: [
+              CartButton(),
+            ],
+            title: Center(
+              child: Text('Upload Prescriptions'),
+            )),
         body: Padding(
           padding: const EdgeInsets.only(
             left: 10.0,

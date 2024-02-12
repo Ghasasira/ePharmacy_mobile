@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
+import 'package:pharmacy_skeleton/pharmacy_components/cart_button.dart';
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({super.key});
@@ -8,6 +11,9 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  int noAdded = 0;
+
+  bool addedToCart = false;
   String selectedTab = "Description";
   List detailTabs = ["Description", "Usage", "Ingredients", "Warnings"];
   List tags = ["Pain killer", "Vitamins", "Organic", "antibiotics"];
@@ -30,6 +36,22 @@ Pregnancy and Breastfeeding: Consult your healthcare provider before taking Pana
 """;
 
   String dataDescription = " ";
+  void addItem() {
+    setState(() {
+      noAdded++;
+    });
+  }
+
+  void removeItem() {
+    setState(() {
+      noAdded--;
+    });
+    if (noAdded == 0) {
+      setState(() {
+        addedToCart = false;
+      });
+    }
+  }
 
   void selectData(String x) {
     switch (x) {
@@ -73,10 +95,12 @@ Pregnancy and Breastfeeding: Consult your healthcare provider before taking Pana
             ),
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 15.0),
-              child: Icon(Icons.shopping_cart),
-            )
+            CartButton(),
+            //Padding(
+
+            // padding: const EdgeInsets.only(right: 15.0),
+            // child: Icon(Icons.shopping_cart),
+            // )
           ],
           title: Center(
             child: Text(
@@ -232,29 +256,88 @@ Pregnancy and Breastfeeding: Consult your healthcare provider before taking Pana
               SizedBox(
                 height: 20.0,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    height: 45.0,
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green),
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.add_shopping_cart,
-                        color: Colors.white,
+              addedToCart
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              removeItem();
+                            },
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            noAdded.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              addItem();
+                            },
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      label: Text("Add To Cart",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )),
-                    ),
-                  ),
-                ],
-              )
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          height: 45.0,
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green),
+                            onPressed: () {
+                              addItem();
+                              setState(() {
+                                addedToCart = true;
+                              });
+                            },
+                            icon: Icon(
+                              Icons.add_shopping_cart,
+                              color: Colors.white,
+                            ),
+                            label: Text("Add To Cart",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                )),
+                          ),
+                        ),
+                      ],
+                    )
             ],
           ),
         ),

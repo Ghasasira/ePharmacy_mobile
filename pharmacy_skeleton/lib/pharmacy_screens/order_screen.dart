@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy_skeleton/pharmacy_components/cart_button.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/order_card.dart';
 
 class OrdersScreen extends StatelessWidget {
@@ -9,6 +10,9 @@ class OrdersScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          actions: [
+            CartButton(),
+          ],
           title: Center(
               child: Text(
             'Orders',

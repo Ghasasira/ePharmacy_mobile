@@ -93,7 +93,7 @@ class ProductCartDetails extends StatelessWidget {
                     icon: Icon(
                       Icons.delete,
                       color: Colors.red,
-                      size: 35,
+                      size: 25,
                     )),
                 Container(
                   //decoration: BoxDecoration(),
@@ -103,7 +103,8 @@ class ProductCartDetails extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      AddRemoveButtons(func: () {}, icon: Icons.add),
+                      AddRemoveButtons(
+                          func: () {}, icon: "assets/images/add.png"),
                       SizedBox(width: 2.0),
                       Text(
                         "3",
@@ -111,7 +112,8 @@ class ProductCartDetails extends StatelessWidget {
                             fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: 2.0),
-                      AddRemoveButtons(func: () {}, icon: Icons.remove),
+                      AddRemoveButtons(
+                          func: () {}, icon: "assets/images/minus.png"),
                     ],
                   ),
                 ),
@@ -165,7 +167,7 @@ class ProductCartDetails extends StatelessWidget {
 
 class AddRemoveButtons extends StatelessWidget {
   final void Function() func;
-  final IconData icon;
+  final String icon;
   const AddRemoveButtons({super.key, required this.func, required this.icon});
 
   @override
@@ -176,15 +178,14 @@ class AddRemoveButtons extends StatelessWidget {
         child: Container(
           height: 25.0,
           width: 25.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.green,
-          ),
-          child: Center(
-              child: Icon(
+          // decoration: BoxDecoration(
+          //   shape: BoxShape.circle,
+          //   color: Colors.green,
+          // ),
+          child: Image.asset(
             icon,
-            color: Colors.white,
-          )),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
