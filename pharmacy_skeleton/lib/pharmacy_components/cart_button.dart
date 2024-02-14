@@ -11,7 +11,7 @@ class CartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(PharmacyCart());
+        Navigator.pushNamed(context, "/cart");
       },
       child: Stack(
         alignment: Alignment.topRight,

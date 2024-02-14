@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy_skeleton/controllers/product_provider.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/cart_button.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/pharmacy_filter_tab.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/productTile.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/search_bar.dart';
+import 'package:provider/provider.dart';
 
 class AllPharmarcyProducts extends StatelessWidget {
   const AllPharmarcyProducts({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context, listen: true);
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -31,7 +35,7 @@ class AllPharmarcyProducts extends StatelessWidget {
                               Text(
                                 "Hello!",
                                 style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                     color: Color.fromARGB(255, 46, 45, 45)),
                               ),
@@ -42,7 +46,7 @@ class AllPharmarcyProducts extends StatelessWidget {
                         Text(
                           "Let's get you your Meds",
                           style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -74,15 +78,15 @@ class AllPharmarcyProducts extends StatelessWidget {
                                 Text(
                                   "Have a Prescription?",
                                   style: TextStyle(
-                                    fontSize: 20.0,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                     //color: Colors.white,
                                   ),
                                 ),
                                 Text(
-                                  "Upload Prescription and tell us what you need. We'll do the rest",
+                                  "Upload Prescription and let us do the rest for you.",
                                   style: TextStyle(
-                                    fontSize: 14.0,
+                                    fontSize: 13.0,
                                     fontWeight: FontWeight.w400,
                                   ),
                                   //textAlign: TextAlign.center,
@@ -120,13 +124,12 @@ class AllPharmarcyProducts extends StatelessWidget {
                     height: 10.0,
                   ),
                   Wrap(
-                    children: [
-                      ProductTile(),
-                      ProductTile(),
-                      ProductTile(),
-                      ProductTile(),
-                      ProductTile(),
-                    ],
+                    //crossAxisAlignment: CrossAxisAlignment.baseline,
+                    children: productProvider.allproducts.map((product) {
+                      return ProductTile(
+                        product: product,
+                      );
+                    }).toList(),
                   ),
                 ],
               ),

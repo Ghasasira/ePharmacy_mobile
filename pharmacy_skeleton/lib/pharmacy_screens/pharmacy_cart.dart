@@ -32,47 +32,80 @@ class PharmacyCart extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10.0,
-              ),
-              CartProductTile(),
-              CartProductTile(),
-              CartProductTile(),
-              LocationTile(),
-              OrderInfoTile(),
-              SizedBox(
-                height: 60.0,
-              )
-            ],
-          ),
-        ),
-        floatingActionButton: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: ElevatedButton(
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                  onPressed: () {},
-                  child: Text(
-                    "Check Out(UGX 52,000)",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 10.0,
                   ),
+                  CartProductTile(),
+                  CartProductTile(),
+                  CartProductTile(),
+                  LocationTile(),
+                  OrderInfoTile(),
+                  SizedBox(
+                    height: 60.0,
+                  )
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green),
+                        onPressed: () {},
+                        child: Text(
+                          "Check Out(UGX 52,000)",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+      //   floatingActionButton: SizedBox(
+      //     width: MediaQuery.of(context).size.width,
+      //     child: Row(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: [
+      //         SizedBox(
+      //           width: MediaQuery.of(context).size.width * 0.8,
+      //           child: ElevatedButton(
+      //             style:
+      //                 ElevatedButton.styleFrom(backgroundColor: Colors.green),
+      //             onPressed: () {},
+      //             child: Text(
+      //               "Check Out(UGX 52,000)",
+      //               style: TextStyle(
+      //                 fontWeight: FontWeight.bold,
+      //                 color: Colors.white,
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

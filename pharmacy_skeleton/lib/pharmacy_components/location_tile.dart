@@ -25,7 +25,7 @@ class LocationTile extends StatelessWidget {
                     Text(
                       "Delivery address",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     SizedBox(
                       height: 10.0,
@@ -53,14 +53,14 @@ class LocationTile extends StatelessWidget {
                                     "Plot 5A",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 15,
+                                      fontSize: 13,
                                     ),
                                   ),
                                   Text(
                                     "Ntinda, Kampala",
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      fontSize: 15,
+                                      fontSize: 13,
                                     ),
                                   ),
                                 ],

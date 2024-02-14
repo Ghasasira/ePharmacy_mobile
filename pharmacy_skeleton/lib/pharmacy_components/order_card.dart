@@ -22,7 +22,7 @@ class _OrderCardState extends State<OrderCard> {
         children: [
           GestureDetector(
             onTap: () {
-              Get.to(ProductDetails());
+              //Get.to(ProductDetails());
             },
             child: Card(
               elevation: 5,
@@ -51,13 +51,13 @@ class _OrderCardState extends State<OrderCard> {
                                 Text(
                                   "6th Feb, 2024",
                                   style: TextStyle(
-                                      fontSize: 13,
+                                      fontSize: 12,
                                       color: Colors.grey,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text("Order ID : ${widget.orderId}",
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     )),
                               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_skeleton/controllers/product_provider.dart';
 import 'package:pharmacy_skeleton/learning/dat_class.dart';
 import 'package:pharmacy_skeleton/learning/learning_page1.dart';
 import 'package:pharmacy_skeleton/learning/user_data.dart';
@@ -8,6 +9,7 @@ import 'package:pharmacy_skeleton/pharmacy_screens/order_screen.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/pharmacy_cart.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/prescription_screen.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/product_details.dart';
+import 'package:pharmacy_skeleton/pharmacy_screens/search_screen.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/upload_prescription.dart';
 import 'package:provider/provider.dart';
 
@@ -24,26 +26,23 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => UserProviderClass(),
+          create: (_) => ProductProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => DataClass(),
         ),
       ],
-      child: GetMaterialApp(
+      child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
             useMaterial3: true,
           ),
-          home: HomePage()
-          //UploadPrescriptionScreen(),
-          //PrescriptionScreen(),
-          // PageOne(),
-          // ProductDetails()
-          //OrdersScreen(),
-          //PharmacyCart(),
-          //const AllPharmarcyProducts(), //MyHomePage(title: 'Flutter Demo Home Page'),
-          ),
+          home: const HomePage(),
+          routes: {
+            "/productDetailsPage": (context) => const ProductDetails(),
+            "/productSearchPage": (context) => const SearchScreen(),
+            "/cart": (context) => const PharmacyCart(),
+          }),
     );
   }
 }
@@ -56,6 +55,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<ProductProvider>(context, listen: false);
+    provider.fetchAllProducts();
+  }
+
   List<BottomNavigationBarItem> _items = [
     BottomNavigationBarItem(
       icon: Icon(Icons.home),

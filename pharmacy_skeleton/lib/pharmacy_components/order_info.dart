@@ -24,7 +24,7 @@ class OrderInfoTile extends StatelessWidget {
                     child: Text(
                       "Order info",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
                   Column(
@@ -75,7 +75,7 @@ class OrderDetailsTile extends StatelessWidget {
               fontWeight: label.toLowerCase() == "total"
                   ? FontWeight.bold
                   : FontWeight.w500,
-              fontSize: label.toLowerCase() == "total" ? 18 : 16,
+              fontSize: label.toLowerCase() == "total" ? 15 : 13,
             ),
           ),
           Text(
@@ -84,7 +84,7 @@ class OrderDetailsTile extends StatelessWidget {
               fontWeight: label.toLowerCase() == "total"
                   ? FontWeight.bold
                   : FontWeight.w500,
-              fontSize: label.toLowerCase() == "total" ? 18 : 16,
+              fontSize: label.toLowerCase() == "total" ? 15 : 13,
             ),
           ),
         ],

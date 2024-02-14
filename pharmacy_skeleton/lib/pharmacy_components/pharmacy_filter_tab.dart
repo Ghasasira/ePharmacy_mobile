@@ -26,7 +26,7 @@ class _PharmacyFilterTabState extends State<PharmacyFilterTab> {
     return Material(
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 45.0,
+        height: 40.0,
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: filterTags.map((e) {
@@ -57,6 +57,7 @@ class _PharmacyFilterTabState extends State<PharmacyFilterTab> {
                       child: Text(
                     e,
                     style: TextStyle(
+                      fontSize: 12.0,
                       color: isChosen ? Colors.white : Colors.black,
                       fontWeight:
                           isChosen ? FontWeight.bold : FontWeight.normal,
