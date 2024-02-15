@@ -15,6 +15,15 @@ class AllPharmarcyProducts extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: CartButton(),
+            ),
+          ],
+        ),
         body: SingleChildScrollView(
           child: Container(
             child: Padding(
@@ -23,25 +32,16 @@ class AllPharmarcyProducts extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                    padding: const EdgeInsets.only(bottom: 20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 40.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Hello!",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color.fromARGB(255, 46, 45, 45)),
-                              ),
-                              CartButton(),
-                            ],
-                          ),
+                        Text(
+                          "Hello!",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Color.fromARGB(255, 46, 45, 45)),
                         ),
                         Text(
                           "Let's get you your Meds",
@@ -96,7 +96,10 @@ class AllPharmarcyProducts extends StatelessWidget {
                                       backgroundColor: const Color.fromARGB(
                                           255, 122, 216, 125),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, "/addPrescription");
+                                    },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(

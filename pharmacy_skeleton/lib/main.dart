@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_skeleton/controllers/cart_controller.dart';
+import 'package:pharmacy_skeleton/controllers/order_controller.dart';
 import 'package:pharmacy_skeleton/controllers/product_provider.dart';
 import 'package:pharmacy_skeleton/learning/dat_class.dart';
 import 'package:pharmacy_skeleton/learning/learning_page1.dart';
@@ -29,12 +31,16 @@ class MyApp extends StatelessWidget {
           create: (_) => ProductProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => DataClass(),
+          create: (_) => CartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrderProvider(),
         ),
       ],
       child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
+            fontFamily: "Roboto",
             useMaterial3: true,
           ),
           home: const HomePage(),
@@ -42,6 +48,7 @@ class MyApp extends StatelessWidget {
             "/productDetailsPage": (context) => const ProductDetails(),
             "/productSearchPage": (context) => const SearchScreen(),
             "/cart": (context) => const PharmacyCart(),
+            "/addPrescription": (context) => const UploadPrescriptionScreen(),
           }),
     );
   }

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy_skeleton/controllers/cart_controller.dart';
+import 'package:pharmacy_skeleton/models/cart.dart';
+import 'package:provider/provider.dart';
 
-class CartProductTile extends StatefulWidget {
-  const CartProductTile({super.key});
+class CartProductTile extends StatelessWidget {
+  final CartItem cartItem;
+  const CartProductTile({
+    super.key,
+    required this.cartItem,
+  });
 
-  @override
-  State<CartProductTile> createState() => _CartProductTileState();
-}
-
-class _CartProductTileState extends State<CartProductTile> {
   @override
   Widget build(BuildContext context) {
+    //CartItem cartItem = cartItem;
+    var cartProvider = Provider.of<CartProvider>(context, listen: true);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.98,
       height: 110.0,
@@ -24,7 +28,7 @@ class _CartProductTileState extends State<CartProductTile> {
               )),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 2.0),
@@ -54,15 +58,28 @@ class _CartProductTileState extends State<CartProductTile> {
                     left: 8.0,
                     right: 8.0,
                   ),
-                  child: const ProductCartDetails(),
+                  child: ProductCartDetails(
+                    cartItem: cartItem,
+                  ),
                 ),
               ),
-              Container(
-                width: 25.0,
-                decoration: BoxDecoration(shape: BoxShape.circle),
-                child: Icon(
-                  Icons.cancel_outlined,
-                  size: 20.0,
+              GestureDetector(
+                onTap: () {
+                  cartProvider.removeItem(cartItem.id);
+                },
+                child: Container(
+                  width: 25.0,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 15.0,
+                    ),
+                    child: Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                      size: 30.0,
+                    ),
+                  ),
                 ),
               )
             ],
@@ -73,30 +90,19 @@ class _CartProductTileState extends State<CartProductTile> {
   }
 }
 
-class ProductCartDetails extends StatefulWidget {
-  const ProductCartDetails({super.key});
+class ProductCartDetails extends StatelessWidget {
+  CartItem cartItem;
 
-  @override
-  State<ProductCartDetails> createState() => _ProductCartDetailsState();
-}
+  ProductCartDetails({
+    super.key,
+    required this.cartItem,
+  });
 
-class _ProductCartDetailsState extends State<ProductCartDetails> {
-  int quantity = 1;
-
-  void reduceQuantity() {
-    setState(() {
-      quantity--;
-    });
-  }
-
-  void increaseQuantity() {
-    setState(() {
-      quantity++;
-    });
-  }
-
+  // void reduceQuantity() {
   @override
   Widget build(BuildContext context) {
+    var cartProvider = Provider.of<CartProvider>(context, listen: true);
+
     return SizedBox(
       height: 100.0,
       child: Column(
@@ -104,94 +110,72 @@ class _ProductCartDetailsState extends State<ProductCartDetails> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            "Product Name This coud be a little long",
+            cartItem.productName,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          // Text(
-          //   "UGX 2000",
-          //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
-          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "UGX 2000",
+                "UGX " + cartItem.productPrice.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
               ),
               Container(
                   //decoration: BoxDecoration(),
                   constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width * 0.15),
+                      minWidth: MediaQuery.of(context).size.width * 0.25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       GestureDetector(
                         onTap: () {
-                          reduceQuantity();
+                          cartProvider.reduceItemQuantity(cartItem.id);
                         },
-                        child: Icon(
-                          Icons.remove,
-                          size: 15.0,
-                          color: Colors.grey,
+                        child: Container(
+                          height: 25.0,
+                          width: 25.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.green,
+                          ),
+                          child: Icon(
+                            Icons.remove,
+                            size: 15.0,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      Text(quantity.toString()),
+                      Text(
+                        cartItem.quantity.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {
-                          increaseQuantity();
+                          cartProvider.increaseItemQuantity(cartItem.id);
                         },
-                        child: Icon(
-                          Icons.add,
-                          size: 15.0,
-                          color: Colors.grey,
+                        child: Container(
+                          height: 25.0,
+                          width: 25.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.green,
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            size: 15.0,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
                   )),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.end,
-              //   children: [
-              //     IconButton(
-              //         onPressed: () {},
-              //         icon: Icon(
-              //           Icons.delete,
-              //           color: Colors.red,
-              //           size: 25,
-              //         )),
-              //     Container(
-              //       //decoration: BoxDecoration(),
-              //       constraints: BoxConstraints(
-              //           minWidth: MediaQuery.of(context).size.width * 0.2),
-              //       //width: ,
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //         children: [
-              //           AddRemoveButtons(
-              //               func: () {
-              //                 reduceQuantity();
-              //               },
-              //               icon: "assets/images/minus.png"),
-              //           SizedBox(width: 2.0),
-              //           Text(
-              //             quantity.toString(),
-              //             style: TextStyle(
-              //                 fontSize: 20.0, fontWeight: FontWeight.bold),
-              //           ),
-              //           SizedBox(width: 2.0),
-              //           AddRemoveButtons(
-              //               func: () {
-              //                 increaseQuantity();
-              //               },
-              //               icon: "assets/images/add.png"),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ],

@@ -3,7 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pharmacy_skeleton/controllers/cart_controller.dart';
 import 'package:pharmacy_skeleton/controllers/product_provider.dart';
+import 'package:pharmacy_skeleton/models/cart.dart';
 import 'package:pharmacy_skeleton/models/product.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/cart_button.dart';
 import 'package:provider/provider.dart';
@@ -17,31 +19,10 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   Product? prod;
-  int noAdded = 0;
-  int price = 0;
   String? dataDescription;
 
-  bool addedToCart = false;
   String selectedTab = "Description";
   List detailTabs = ["Description", "Usage", "Ingredients", "Warnings"];
-  // List tags = ["Pain killer", "Vitamins", "Organic", "antibiotics"];
-
-//   String description = """
-// Panadol, also known as paracetamol or acetaminophen, is a common over-the-counter medication used for relieving mild-to-moderate pain and reducing fever. It’s found in many cold and flu medications. The exact mechanism of action is unclear, but it’s thought to block pain signals in the brain and affect body temperature regulation. Conditions it can provide relief for include headaches, dental pain, muscular aches, arthritis, backache, period pain, colds and flu symptoms, and post-operative pain. It’s crucial to use Panadol responsibly, following product label instructions, and not exceeding the maximum daily dose. It’s available in various forms, including tablets, injections, and suppositories.
-// """;
-//   String usage =
-//       "Panadol, also known as paracetamol, is used to relieve mild-to-moderate pain and reduce fever12. It’s effective for conditions like headaches, osteoarthritis, and post-operative pain12. Adults and children over 12 years can take 500 to 1000mg every 4-6 hours, not exceeding 4000mg in 24 hours34. It’s crucial to only take one product containing paracetamol at a time to avoid overdose2. Always follow the product label instructions and consult a healthcare provider if unsure2.";
-//   String ingredients =
-//       """Active Ingredient: Each tablet contains Paracetamol 500 mg.
-// Other Ingredients: Maize starch, potassium sorbate (E 202), purified talc, stearic acid, povidone, starch pregelatinised, hypromellose, triacetin.
-// Please note that the ingredients can vary depending on the specific product and region. Always check the packaging for the most accurate and up-to-date information.""";
-//   String warnings = """
-// Allergy: Do not take Panadol if you are allergic to it or any of its ingredients1.
-// Liver or Kidney Problems: Individuals with liver or kidney disease should use caution when taking Panadol, as it is metabolized by the liver and excreted by the kidneys23.
-// Alcohol Consumption: People who consume three or more alcoholic drinks daily should avoid taking Panadol2.
-// Other Medications: Do not take Panadol if you are taking any other prescription or non-prescription medications containing paracetamol or acetaminophen1.
-// Pregnancy and Breastfeeding: Consult your healthcare provider before taking Panadol1.
-// """;
 
   void initState() {
     // TODO: implement initState
@@ -49,25 +30,6 @@ class _ProductDetailsState extends State<ProductDetails> {
     dataDescription = prod!.productDescription;
 
     super.initState();
-  }
-
-  void addItem() {
-    setState(() {
-      noAdded++;
-      price = (2000 * noAdded);
-    });
-  }
-
-  void removeItem() {
-    setState(() {
-      noAdded--;
-      price = (2000 * noAdded);
-    });
-    if (noAdded == 0) {
-      setState(() {
-        addedToCart = false;
-      });
-    }
   }
 
   void selectData(String data) {
@@ -93,6 +55,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = Provider.of(context, listen: true);
     return Scaffold(
       appBar: AppBar(
           elevation: 5,
@@ -139,23 +102,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
-                        // child: CachedNetworkImage(
-                        //   imageUrl: prod!.productImage,
-                        //   imageBuilder: (context, imageProvider) => Container(
-                        //     //height: 250.0,
-                        //     //width: MediaQuery.of(context).size.width,
-                        //     decoration: BoxDecoration(
-                        //       image: DecorationImage(
-                        //         image: imageProvider,
-                        //         fit: BoxFit.cover,
-                        //       ),
-                        //     ),
-                        //   ),
-                        //   placeholder: (context, url) => Lottie.asset(
-                        //       "assets/lottie/loading_hand_lottie.json"),
-                        //   errorWidget: (context, url, error) =>
-                        //       Icon(Icons.error),
-                        // ),
                         child: Image.network(
                           prod!.productImage,
                           fit: BoxFit.fill,
@@ -299,7 +245,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     //addedToCart
                     Visibility(
-                      visible: addedToCart,
+                      visible: cartProvider.isInCart(prod!.id),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -310,7 +256,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    removeItem();
+                                    cartProvider.reduceItemQuantity(prod!.id);
                                   },
                                   child: Container(
                                     height: 45,
@@ -328,7 +274,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   ),
                                 ),
                                 Text(
-                                  noAdded.toString(),
+                                  cartProvider
+                                      .getSingleProductQuantity(prod!.id)
+                                      .toString(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -336,7 +284,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    addItem();
+                                    cartProvider.increaseItemQuantity(prod!.id);
                                   },
                                   child: Container(
                                     height: 45,
@@ -374,16 +322,12 @@ class _ProductDetailsState extends State<ProductDetails> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.75,
               //height: 45.0,
-              child: !addedToCart
+              child: !cartProvider.isInCart(prod!.id)
                   ? ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green),
                       onPressed: () {
-                        addItem();
-                        setState(() {
-                          addedToCart = true;
-                          //noAdded++;
-                        });
+                        cartProvider.addItem(CartItem.fromProduct(prod!, 1));
                       },
                       icon: Icon(
                         Icons.add_shopping_cart,
@@ -399,7 +343,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green),
                       onPressed: () {},
-                      child: Text("Add for UGX $price",
+                      child: Text(
+                          "Add for UGX " +
+                              cartProvider
+                                  .getSingleProductSubtotalPrice(prod!.id)
+                                  .toString(),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

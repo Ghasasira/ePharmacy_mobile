@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pharmacy_skeleton/controllers/cart_controller.dart';
+import 'package:pharmacy_skeleton/controllers/order_controller.dart';
+import 'package:provider/provider.dart';
 
-class OrderInfoTile extends StatelessWidget {
+class OrderInfoTile extends StatefulWidget {
   const OrderInfoTile({super.key});
 
   @override
+  State<OrderInfoTile> createState() => _OrderInfoTileState();
+}
+
+class _OrderInfoTileState extends State<OrderInfoTile> {
+  int shipping = 0;
+  setShipping() {
+    setState(() {
+      shipping = 2000;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider =
+        Provider.of<CartProvider>(context, listen: true);
+    OrderProvider orderProvider =
+        Provider.of<OrderProvider>(context, listen: true);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -30,16 +50,20 @@ class OrderInfoTile extends StatelessWidget {
                   Column(
                     children: [
                       OrderDetailsTile(
-                        label: "Cart(1)",
-                        value: "50,000",
+                        label: "Cart(${cartProvider.items.length.toString()})",
+                        value: cartProvider
+                            .getAllProductSubtotalPrice()
+                            .toString(),
                       ),
                       OrderDetailsTile(
                         label: "Shipping Cost",
-                        value: "2,000",
+                        value: shipping.toString(),
                       ),
                       OrderDetailsTile(
                         label: "Total",
-                        value: "52,000",
+                        value: (cartProvider.getAllProductSubtotalPrice() +
+                                shipping)
+                            .toString(),
                       ),
                     ],
                   ),

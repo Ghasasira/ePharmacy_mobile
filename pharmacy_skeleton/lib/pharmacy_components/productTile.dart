@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_skeleton/controllers/cart_controller.dart';
 import 'package:pharmacy_skeleton/controllers/product_provider.dart';
+import 'package:pharmacy_skeleton/models/cart.dart';
 import 'package:pharmacy_skeleton/models/product.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/product_details.dart';
 import 'package:provider/provider.dart';
 
-class ProductTile extends StatefulWidget {
+class ProductTile extends StatelessWidget {
   final Product product;
 
   const ProductTile({
@@ -14,34 +16,9 @@ class ProductTile extends StatefulWidget {
   });
 
   @override
-  State<ProductTile> createState() => _ProductTileState();
-}
-
-class _ProductTileState extends State<ProductTile> {
-  bool isAddedToCart = false;
-  int quantity = 0;
-  void addToCart() {
-    setState(() {
-      quantity++;
-      isAddedToCart = true;
-    });
-  }
-
-  void addItem() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void removeItem() {
-    setState(() {
-      quantity > 1 ? quantity-- : isAddedToCart = false;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    Product product = widget.product;
+    CartProvider cartProvider =
+        Provider.of<CartProvider>(context, listen: true);
 
     return Padding(
       padding: const EdgeInsets.all(5.0),
@@ -59,23 +36,64 @@ class _ProductTileState extends State<ProductTile> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height:
-                      //imageHeight,
-                      150,
-                  width: MediaQuery.of(context).size.width * 0.43,
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(66, 156, 231, 213),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Image.network(
-                      product.productImage,
-                      //"assets/images/tablets_pic.jpg",
-                      fit: BoxFit.cover,
+                Stack(
+                  children: [
+                    Container(
+                      height:
+                          //imageHeight,
+                          150,
+                      width: MediaQuery.of(context).size.width * 0.43,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(66, 156, 231, 213),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: Image.network(
+                          product.productImage,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
+                    Visibility(
+                        visible: !cartProvider.isInCart(product.id),
+                        child: Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              cartProvider
+                                  .addItem(CartItem.fromProduct(product, 1));
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5.0, right: 5.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "ADD",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Icon(
+                                          Icons.add_circle_outline,
+                                          color: Colors.green,
+                                          size: 20.0,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                          ),
+                        ))
+                  ],
                 ),
                 Container(
                   constraints: BoxConstraints(
@@ -124,74 +142,59 @@ class _ProductTileState extends State<ProductTile> {
                                     )
                                   ]),
                                 ),
-                                isAddedToCart
-                                    ? Container(
-                                        height: 30.0,
-                                        width: 80.0,
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 212, 211, 211),
-                                          borderRadius:
-                                              BorderRadius.circular(25.0),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            AddorRemoveButton(
-                                              func: () {
-                                                removeItem();
-                                              },
-                                              icon: Icon(
-                                                Icons.remove,
-                                                size: 20.0,
-                                                color: Colors.black,
-                                              ),
-                                              bgcolor: Colors.white,
-                                            ),
-                                            Text(
-                                              quantity.toString(),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            AddorRemoveButton(
-                                              func: () {
-                                                addItem();
-                                              },
-                                              icon: Icon(
-                                                Icons.add,
-                                                size: 20.0,
-                                                color: Colors.white,
-                                              ),
-                                              bgcolor: Colors.green,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : GestureDetector(
-                                        onTap: () {
-                                          addToCart();
-                                        },
-                                        child: Container(
-                                          height: 30.0,
-                                          width: 90.0,
-                                          decoration: BoxDecoration(
-                                            color: Colors.green,
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
+                                Visibility(
+                                  visible: cartProvider.isInCart(product.id),
+                                  child: Container(
+                                    height: 30.0,
+                                    width: 80.0,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 212, 211, 211),
+                                      borderRadius: BorderRadius.circular(25.0),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        AddorRemoveButton(
+                                          func: () {
+                                            cartProvider
+                                                .reduceItemQuantity(product.id);
+                                          },
+                                          icon: Icon(
+                                            Icons.remove,
+                                            size: 20.0,
+                                            color: Colors.black,
                                           ),
-                                          child: Center(
-                                            child: Text(
-                                              "Add To Cart",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 11.0,
-                                              ),
-                                            ),
+                                          bgcolor: Colors.white,
+                                        ),
+                                        Text(
+                                          //cartProvider.
+                                          cartProvider
+                                              .getSingleProductQuantity(
+                                                  product.id)
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      ),
+                                        AddorRemoveButton(
+                                          func: () {
+                                            cartProvider.increaseItemQuantity(
+                                                product.id);
+                                            //addItem();
+                                          },
+                                          icon: Icon(
+                                            Icons.add,
+                                            size: 20.0,
+                                            color: Colors.white,
+                                          ),
+                                          bgcolor: Colors.green,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ])
                         ]),
                   ),
@@ -202,31 +205,6 @@ class _ProductTileState extends State<ProductTile> {
     );
   }
 }
-
-// class AddToCartButton extends StatelessWidget {
-//   const AddToCartButton({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: 30.0,
-//       width: 90.0,
-//       decoration: BoxDecoration(
-//         color: Colors.green,
-//         borderRadius: BorderRadius.circular(10.0),
-//       ),
-//       child: Center(
-//         child: Text(
-//           "Add To Cart",
-//           style: TextStyle(
-//             color: Colors.white,
-//             //fontSize: 11.0,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class AddorRemoveButton extends StatelessWidget {
   final Icon icon;
