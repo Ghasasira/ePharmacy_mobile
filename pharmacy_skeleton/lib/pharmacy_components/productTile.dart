@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_skeleton/controllers/cart_controller.dart';
-import 'package:pharmacy_skeleton/controllers/product_provider.dart';
+import 'package:pharmacy_skeleton/controllers/product_controller.dart';
 import 'package:pharmacy_skeleton/models/cart.dart';
 import 'package:pharmacy_skeleton/models/product.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/product_details.dart';
@@ -30,177 +30,191 @@ class ProductTile extends StatelessWidget {
           Provider.of<ProductProvider>(context, listen: false)
               .fetchSingleProduct(product.id);
         },
-        child: Container(
-            constraints: BoxConstraints(minHeight: 220.0),
-            width: MediaQuery.of(context).size.width * 0.43,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height:
-                          //imageHeight,
-                          150,
-                      width: MediaQuery.of(context).size.width * 0.43,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(66, 156, 231, 213),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: Image.network(
-                          product.productImage,
-                          fit: BoxFit.cover,
+        child: Card(
+          elevation: 5,
+          child: Container(
+              color: Colors.white,
+              constraints: BoxConstraints(
+                minHeight: 150.0,
+              ),
+              width: MediaQuery.of(context).size.width * 0.48,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        height: 150,
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        decoration: BoxDecoration(
+                          color:
+                              Colors.white, //Color.fromARGB(66, 156, 231, 213),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Center(
+                          child: SizedBox(
+                            // image size
+                            height: 100,
+                            // child: Container(
+                            //borderRadius: BorderRadius.circular(15.0),
+                            child: Image.network(
+                              product.productImage,
+                              //fit: BoxFit.cover,
+                            ),
+                            // ),
+                          ),
                         ),
                       ),
-                    ),
-                    Visibility(
-                        visible: !cartProvider.isInCart(product.id),
-                        child: Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              cartProvider
-                                  .addItem(CartItem.fromProduct(product, 1));
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 5.0, right: 5.0),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "ADD",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Icon(
-                                          Icons.add_circle_outline,
-                                          color: Colors.green,
-                                          size: 20.0,
-                                        ),
-                                      ],
-                                    ),
+                      Visibility(
+                          visible: !cartProvider.isInCart(product.id),
+                          child: Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                cartProvider
+                                    .addItem(CartItem.fromProduct(product, 1));
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                )),
-                          ),
-                        ))
-                  ],
-                ),
-                Container(
-                  constraints: BoxConstraints(
-                    minHeight: 50.0,
-                    maxHeight: 80.0,
-                  ),
-                  //height: 60.0,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      right: 5.0,
-                    ),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            product.productName,
-                            maxLines: 2,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13.0,
+                                  child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 5.0, right: 5.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "ADD",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Icon(
+                                            Icons.add_circle_outline,
+                                            color: Colors.green,
+                                            size: 20.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )),
                             ),
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                      text: "UGX:\n",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0,
-                                        color: Colors.blueGrey,
-                                        textBaseline: TextBaseline.alphabetic,
+                          ))
+                    ],
+                  ),
+                  Container(
+                    //color: Colors.white,
+                    constraints: BoxConstraints(
+                      //minHeight: 50.0,
+                      maxHeight: 80.0,
+                    ),
+                    //height: 60.0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10.0,
+                        right: 5.0,
+                      ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              product.productName,
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.0,
+                              ),
+                            ),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                        text: "UGX:\n",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10.0,
+                                          color: Colors.blueGrey,
+                                          textBaseline: TextBaseline.alphabetic,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: product.productPrice.toString(),
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14.0,
+                                      TextSpan(
+                                        text: product.productPrice.toString(),
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0,
+                                        ),
+                                      )
+                                    ]),
+                                  ),
+                                  Visibility(
+                                    visible: cartProvider.isInCart(product.id),
+                                    child: Container(
+                                      height: 30.0,
+                                      width: 80.0,
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                            255, 212, 211, 211),
+                                        borderRadius:
+                                            BorderRadius.circular(25.0),
                                       ),
-                                    )
-                                  ]),
-                                ),
-                                Visibility(
-                                  visible: cartProvider.isInCart(product.id),
-                                  child: Container(
-                                    height: 30.0,
-                                    width: 80.0,
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 212, 211, 211),
-                                      borderRadius: BorderRadius.circular(25.0),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        AddorRemoveButton(
-                                          func: () {
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          AddorRemoveButton(
+                                            func: () {
+                                              cartProvider.reduceItemQuantity(
+                                                  product.id);
+                                            },
+                                            icon: Icon(
+                                              Icons.remove,
+                                              size: 20.0,
+                                              color: Colors.black,
+                                            ),
+                                            bgcolor: Colors.white,
+                                          ),
+                                          Text(
+                                            //cartProvider.
                                             cartProvider
-                                                .reduceItemQuantity(product.id);
-                                          },
-                                          icon: Icon(
-                                            Icons.remove,
-                                            size: 20.0,
-                                            color: Colors.black,
+                                                .getSingleProductQuantity(
+                                                    product.id)
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                          bgcolor: Colors.white,
-                                        ),
-                                        Text(
-                                          //cartProvider.
-                                          cartProvider
-                                              .getSingleProductQuantity(
-                                                  product.id)
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
+                                          AddorRemoveButton(
+                                            func: () {
+                                              cartProvider.increaseItemQuantity(
+                                                  product.id);
+                                              //addItem();
+                                            },
+                                            icon: Icon(
+                                              Icons.add,
+                                              size: 20.0,
+                                              color: Colors.white,
+                                            ),
+                                            bgcolor: Colors.green,
                                           ),
-                                        ),
-                                        AddorRemoveButton(
-                                          func: () {
-                                            cartProvider.increaseItemQuantity(
-                                                product.id);
-                                            //addItem();
-                                          },
-                                          icon: Icon(
-                                            Icons.add,
-                                            size: 20.0,
-                                            color: Colors.white,
-                                          ),
-                                          bgcolor: Colors.green,
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ])
-                        ]),
+                                ])
+                          ]),
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              )),
+        ),
       ),
     );
   }

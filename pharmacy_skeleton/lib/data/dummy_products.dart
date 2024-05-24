@@ -27,7 +27,9 @@ List<Product> dummyProducts = [
         "vitamins",
         "minerals",
         "health",
-        "wellness"
+        "wellness",
+        "suppliments",
+        "adults",
       ],
       quantityPerUnit: "60 capsules",
       quantity: 1),
@@ -56,7 +58,9 @@ List<Product> dummyProducts = [
         "muscle growth",
         "recovery",
         "pea protein",
-        "vegan"
+        "vegan",
+        "adult",
+        "children"
       ],
       quantityPerUnit: "30 servings",
       quantity: 1),
@@ -116,7 +120,8 @@ List<Product> dummyProducts = [
         "gut health",
         "digestion",
         "microbiome",
-        "CFU"
+        "CFU",
+        "tablets"
       ],
       quantityPerUnit: "30 capsules",
       quantity: 1),
@@ -140,7 +145,9 @@ List<Product> dummyProducts = [
         "organic",
         "antioxidants",
         "energy",
-        "caffeine"
+        "caffeine",
+        "adults",
+        "syrup",
       ],
       quantityPerUnit: "100g",
       quantity: 1),

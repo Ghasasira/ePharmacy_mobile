@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_skeleton/controllers/cart_controller.dart';
 import 'package:pharmacy_skeleton/controllers/order_controller.dart';
+import 'package:pharmacy_skeleton/controllers/shipping_controller.dart';
 import 'package:provider/provider.dart';
 
 class OrderInfoTile extends StatefulWidget {
@@ -23,8 +24,10 @@ class _OrderInfoTileState extends State<OrderInfoTile> {
   Widget build(BuildContext context) {
     CartProvider cartProvider =
         Provider.of<CartProvider>(context, listen: true);
-    OrderProvider orderProvider =
-        Provider.of<OrderProvider>(context, listen: true);
+    // OrderProvider orderProvider =
+    //     Provider.of<OrderProvider>(context, listen: true);
+    ShippingProvider shippingProvider =
+        Provider.of<ShippingProvider>(context, listen: true);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -56,13 +59,16 @@ class _OrderInfoTileState extends State<OrderInfoTile> {
                             .toString(),
                       ),
                       OrderDetailsTile(
-                        label: "Shipping Cost",
-                        value: shipping.toString(),
-                      ),
+                          label: "Shipping Cost",
+                          value: shippingProvider.shippingFee < 1
+                              ? "___"
+                              : shippingProvider.shippingFee.toString()
+                          //shipping.toString(),
+                          ),
                       OrderDetailsTile(
                         label: "Total",
                         value: (cartProvider.getAllProductSubtotalPrice() +
-                                shipping)
+                                shippingProvider.shippingFee)
                             .toString(),
                       ),
                     ],

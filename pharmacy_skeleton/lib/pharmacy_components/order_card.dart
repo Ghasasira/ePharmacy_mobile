@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_skeleton/models/order.dart';
 import 'package:pharmacy_skeleton/pharmacy_components/order_info.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/product_details.dart';
 
 class OrderCard extends StatefulWidget {
-  final String status;
-  final int orderId;
-  const OrderCard({super.key, required this.status, required this.orderId});
+  final Order order;
+
+  const OrderCard({super.key, required this.order});
 
   @override
   State<OrderCard> createState() => _OrderCardState();
@@ -16,14 +17,13 @@ class _OrderCardState extends State<OrderCard> {
   bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
+    Order order = widget.order;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Stack(
         children: [
           GestureDetector(
-            onTap: () {
-              //Get.to(ProductDetails());
-            },
+            onTap: () {},
             child: Card(
               elevation: 5,
               color: Colors.white,
@@ -55,7 +55,7 @@ class _OrderCardState extends State<OrderCard> {
                                       color: Colors.grey,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                Text("Order ID : ${widget.orderId}",
+                                Text("Order ID : ${order.orderId}",
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
@@ -66,20 +66,20 @@ class _OrderCardState extends State<OrderCard> {
                           Row(
                             children: [
                               Icon(
-                                widget.status.toLowerCase() == "delivered"
+                                order.status!.toLowerCase() == "delivered"
                                     ? Icons.check_circle
                                     : Icons.info,
                                 color:
-                                    widget.status.toLowerCase() == "delivered"
+                                    order.status!.toLowerCase() == "delivered"
                                         ? Colors.green
                                         : Colors.orange,
                                 size: 18,
                               ),
                               Text(
-                                widget.status,
+                                order.status!,
                                 style: TextStyle(
                                   color:
-                                      widget.status.toLowerCase() == "delivered"
+                                      order.status!.toLowerCase() == "delivered"
                                           ? Colors.green
                                           : Colors.orange,
                                 ),
@@ -93,46 +93,20 @@ class _OrderCardState extends State<OrderCard> {
                         color: Colors.grey,
                         height: 5,
                       ),
-                      isExpanded
+
+                      isExpanded || order.productList.length < 2
                           ? Padding(
                               padding:
                                   const EdgeInsets.only(top: 8.0, bottom: 8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  OrderDetailsTile(
-                                    label: "1x Panadol",
-                                    value: "5,000",
-                                  ),
-                                  OrderDetailsTile(
-                                    label: "1x syrup",
-                                    value: "2,000",
-                                  ),
-                                  OrderDetailsTile(
-                                    label: "1x Charcoal Tablets",
-                                    value: "60,000",
-                                  ),
-                                  OrderDetailsTile(
-                                    label: "3x Dewormers",
-                                    value: "2,000",
-                                  ),
-                                  OrderDetailsTile(
-                                    label: "2x Mabendazole",
-                                    value: "10,000",
-                                  ),
-                                  OrderDetailsTile(
-                                    label: "1x Cough Syrup",
-                                    value: "5,000",
-                                  ),
-                                  OrderDetailsTile(
-                                    label: "10x face scrub",
-                                    value: "30,000",
-                                  ),
-                                  OrderDetailsTile(
-                                    label: "1x ORS",
-                                    value: "2,000",
-                                  ),
-                                ],
+                                children: order.productList.map((orderItem) {
+                                  return OrderDetailsTile(
+                                    label:
+                                        "${orderItem.quantity}x ${orderItem.productName}",
+                                    value: "${orderItem.productTotalPrice}",
+                                  );
+                                }).toList(),
                               ),
                             )
                           : Padding(
@@ -142,10 +116,15 @@ class _OrderCardState extends State<OrderCard> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     OrderDetailsTile(
-                                      label: "1x Panadol",
-                                      value: "5,000",
+                                      label:
+                                          "${order.productList[0].quantity}x ${order.productList[0].productName}",
+                                      value:
+                                          "${order.productList[0].productTotalPrice}",
                                     ),
-                                    Text("... +5")
+                                    Text(
+                                      "... \+${order.productList.length - 1}",
+                                      style: TextStyle(color: Colors.blue),
+                                    )
                                   ]),
                             ),
                       Visibility(
@@ -165,11 +144,11 @@ class _OrderCardState extends State<OrderCard> {
                             children: [
                               OrderDetailsTile(
                                 label: "Subtotal",
-                                value: "50,000",
+                                value: "${order.subTotal}",
                               ),
                               OrderDetailsTile(
                                 label: "Shipping Cost",
-                                value: "2,000",
+                                value: "${order.shippingCost}",
                               ),
                             ],
                           ),
@@ -184,7 +163,7 @@ class _OrderCardState extends State<OrderCard> {
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                         child: OrderDetailsTile(
                           label: "Total",
-                          value: "52,000",
+                          value: "${order.totalCost}",
                         ),
                       ),
                       // SizedBox(

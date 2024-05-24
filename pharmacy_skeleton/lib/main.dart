@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_skeleton/controllers/cart_controller.dart';
 import 'package:pharmacy_skeleton/controllers/order_controller.dart';
-import 'package:pharmacy_skeleton/controllers/product_provider.dart';
+import 'package:pharmacy_skeleton/controllers/product_controller.dart';
+import 'package:pharmacy_skeleton/controllers/shipping_controller.dart';
 import 'package:pharmacy_skeleton/learning/dat_class.dart';
 import 'package:pharmacy_skeleton/learning/learning_page1.dart';
 import 'package:pharmacy_skeleton/learning/user_data.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/all_pharmacy_products.dart';
+import 'package:pharmacy_skeleton/pharmacy_screens/map_screen.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/order_screen.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/pharmacy_cart.dart';
 import 'package:pharmacy_skeleton/pharmacy_screens/prescription_screen.dart';
@@ -36,8 +38,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => OrderProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => ShippingProvider(),
+        ),
       ],
       child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             fontFamily: "Roboto",
@@ -49,6 +55,8 @@ class MyApp extends StatelessWidget {
             "/productSearchPage": (context) => const SearchScreen(),
             "/cart": (context) => const PharmacyCart(),
             "/addPrescription": (context) => const UploadPrescriptionScreen(),
+            "/orders": (context) => const OrdersScreen(),
+            "/map": (context) => MapScreen(),
           }),
     );
   }
@@ -85,7 +93,7 @@ class _HomePageState extends State<HomePage> {
   ];
 
   List pages = [
-    AllPharmarcyProducts(),
+    AllPharmacyProducts(),
     UploadPrescriptionScreen(),
     OrdersScreen(),
   ];

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy_skeleton/controllers/product_controller.dart';
+import 'package:provider/provider.dart';
 
 class PharmacyFilterTab extends StatefulWidget {
   const PharmacyFilterTab({super.key});
@@ -10,19 +12,17 @@ class PharmacyFilterTab extends StatefulWidget {
 class _PharmacyFilterTabState extends State<PharmacyFilterTab> {
   List filterTags = [
     "All",
-    "Tablet",
+    "Tablets",
     "Syrup",
     "Adults",
     "Children",
     "Suppliments",
-    "Adults",
-    "Children",
-    "Suppliments"
   ];
   String chosenTag = "All";
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context, listen: true);
     return Material(
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -36,6 +36,7 @@ class _PharmacyFilterTabState extends State<PharmacyFilterTab> {
                 setState(() {
                   chosenTag = e;
                 });
+                productProvider.filterProduct(e);
               },
               child: Padding(
                 padding: const EdgeInsets.all(6.0),

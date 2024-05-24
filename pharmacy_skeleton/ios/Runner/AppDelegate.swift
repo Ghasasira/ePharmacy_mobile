@@ -8,6 +8,10 @@ import Flutter
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
+
+    //Google Maps API key
+    GMSServices.provideAPIKey("AIzaSyCJfY57SF2W6botWVMDyDal43Cwd90yHuI")
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

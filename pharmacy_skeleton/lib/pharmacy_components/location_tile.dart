@@ -71,7 +71,9 @@ class LocationTile extends StatelessWidget {
                         Flexible(
                           flex: 2,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/map');
+                            },
                             child: Row(
                               children: [
                                 Text("Change "),

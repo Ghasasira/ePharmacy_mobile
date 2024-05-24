@@ -1,21 +1,21 @@
 import 'package:pharmacy_skeleton/models/cart.dart';
 import 'package:pharmacy_skeleton/models/product.dart';
 
-class OrderItem {
+class Order {
   final String? status;
   final int subTotal;
-  final int shipping;
+  final int shippingCost;
+  final String shippingAddress;
   final String orderId;
   final int totalCost;
   final List<CartItem> productList;
-  final String location;
 
-  OrderItem({
+  Order({
     required this.orderId,
-    this.status,
+    this.status = "Pending",
     required this.subTotal,
-    required this.shipping,
+    required this.shippingAddress,
+    required this.shippingCost,
     required this.productList,
-    required this.location,
-  }) : totalCost = subTotal + shipping;
+  }) : totalCost = subTotal + shippingCost;
 }
